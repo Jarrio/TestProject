@@ -1,5 +1,7 @@
 package system.base;
 
+import kha.graphics2.Graphics;
+import kha.Framebuffer;
 import ecx.System;
 import kha.Font;
 import ecx.Family;
@@ -22,22 +24,19 @@ class RenderSystem extends System {
     override function initialize() {
     }
 
-	override function update() {
-
-		if (Game.framebuffer == null) {
-			return;
-		}
-
-		var graphics = Game.framebuffer.g2;
+	var position_a = null;
+	var display_a = null;
+	
+	public function render(graphics:Graphics) {
 		graphics.begin();
 
 		for (node in this.display_id) {
-			var position = this.position.get(node);
-			var display = this.display.get(node);
+			position_a = this.position.get(node);
+			display_a = this.display.get(node);
 			
-			graphics.color = display.color;
+			graphics.color = display_a.color;
 			trace(graphics.color);
-			graphics.fillRect(position.x, position.y, display.width, display.height);		
+			graphics.fillRect(position_a.x, position_a.y, display_a.width, display_a.height);		
 		}
 
 		graphics.end();

@@ -49,7 +49,6 @@ class GameSystem extends System {
 
 	override function update() {
 		for (entity in this.objects) {
-			// trace("HERE");b       
 			position_a = this.position.get(entity);
 			movable_a = this.movable.get(entity).value;  
 			display_a = this.display.get(entity);  
@@ -65,6 +64,7 @@ class GameSystem extends System {
 					display_a.color = display_a.init_color;
 					continue;
 				}
+
 				display_a.color = switch (key) {
 					case Left: Color.Red;
 					case Right: Color.Red;

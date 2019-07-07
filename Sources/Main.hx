@@ -27,6 +27,7 @@ typedef Text = component.display.Text<Font, Color>;
 
 class Main {
 	public static var ecx:ECXLoader;
+	
 	public static function main() {
 		Game.refresh_rate = 1 / 60;
 		System.start({title: "Project", width: 600, height: 400}, function (window) {
@@ -38,7 +39,11 @@ class Main {
 				// Scheduler.TI
 				ecx = new ECXLoader();
 				Scheduler.addTimeTask(() -> ecx.updateSystems(), 0, Game.refresh_rate);
-				System.notifyOnFrames((frames) -> Game.framebuffer = frames[0]);
+				System.notifyOnFrames((frames) -> {
+					for (draw in ecx.render_systems) {
+						draw.render(frames[0].g2);
+					}
+				});
 			});
 		});
 	}
@@ -46,12 +51,18 @@ class Main {
 
 class ECXLoader {
 	public var world:World;
+	public var render_systems:Array<RenderSystem>;
 	public function new():Void {
+		render_systems = [];
 		var config = new WorldConfig();
 		/**
 		 * Internal systems
 		 */
-		config.add(new RenderSystem());
+		render_systems.push(new RenderSystem());
+		for (draw in render_systems) {
+			config.add(draw);
+		}
+
 		config.add(new KeyboardInputSystem(), 1);
 
 		/**

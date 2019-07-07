@@ -3,6 +3,6 @@ project.addAssets('Assets/**');
 project.addShaders('Shaders/**');
 project.addSources('Sources');
 project.addLibrary('ecx');
-project.addDefine('ecx_debug')
+// project.addDefine('ecx_debug')
 
 resolve(project);
