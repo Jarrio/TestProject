@@ -33,18 +33,18 @@ class Main {
 		System.start({title: "Project", width: 600, height: 400}, function (window) {
 			Game.window = window;
 			// Just loading everything is ok for small projects
-			Assets.loadEverything(function () {
+			// Assets.loadEverything(function () {
 				// Avoid passing update/render directly,
 				// so replacing them via code injection works
 				// Scheduler.TI
 				ecx = new ECXLoader();
-				Scheduler.addTimeTask(() -> ecx.updateSystems(), 0, Game.refresh_rate);
+				Scheduler.addTimeTask(ecx.updateSystems, 0, Game.refresh_rate);
 				System.notifyOnFrames((frames) -> {
 					for (draw in ecx.render_systems) {
 						draw.render(frames[0].g2);
 					}
 				});
-			});
+			// });
 		});
 	}
 }
@@ -59,6 +59,7 @@ class ECXLoader {
 		 * Internal systems
 		 */
 		render_systems.push(new RenderSystem());
+
 		for (draw in render_systems) {
 			config.add(draw);
 		}

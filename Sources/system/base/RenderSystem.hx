@@ -1,5 +1,6 @@
 package system.base;
 
+import component.Vector.VectorData;
 import kha.graphics2.Graphics;
 import kha.Framebuffer;
 import ecx.System;
@@ -16,27 +17,28 @@ class RenderSystem extends System {
 	var display:Wire<Display<Color>>;
 	var text:Wire<Text>;
 	var position:Wire<Position>;	
-	var display_id:Family<Display<Color>, Position, (Text)>;	
-	// var position_id:Family<Position>;	
+	var display_objects:Family<Display<Color>, Position, (Text)>;	
+
+	/**
+	 * Cache vars
+	 */
+
+	var position_data:VectorData;
+	var display_data:DisplayData<Color>;
 
 	public function new () {}
 
-    override function initialize() {
-    }
-
-	var position_a = null;
-	var display_a = null;
+    override function initialize() {}
 	
 	public function render(graphics:Graphics) {
 		graphics.begin();
 
-		for (node in this.display_id) {
-			position_a = this.position.get(node);
-			display_a = this.display.get(node);
+		for (node in this.display_objects) {
+			var position_data = this.position.get(node);
+			var display_data = this.display.get(node);
 			
-			graphics.color = display_a.color;
-			trace(graphics.color);
-			graphics.fillRect(position_a.x, position_a.y, display_a.width, display_a.height);		
+			graphics.color = display_data.color;
+			graphics.fillRect(position_data.x, position_data.y, display_data.width, display_data.height);		
 		}
 
 		graphics.end();
